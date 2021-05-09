@@ -5,6 +5,9 @@ CREATE TABLE villains (
 	name VARCHAR(255),
 	movie VARCHAR(255),
 	slug VARCHAR(255),
+  createdAt DATETIME DEFAULT NOW(),
+  updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+  deletedAt DATETIME,
     primary key(slug)
 );
 insert into villains (name, movie, slug) values ("Captain Hook", "Peter Pan", "captain-hook"), ("Cruella de Vil", "One Hundred and One Dalmations", "cruella-de-vil"), ("Gaston", "Beauty and the Beast", "gaston");
