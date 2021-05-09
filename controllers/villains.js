@@ -4,32 +4,15 @@ const getAllVillains = (request, response) => {
   return response.send(villains)
 }
 
-const getVillainById = (request, response) => {
-  const { id } = request.params
 
-  const matchingVillains = villains.find((villain) => villain.id === parseInt(id))
+const getVillainBySlug = (request, response) => {
+  const { slug } = request.params
 
-  return matchingVillains
-    ? response.send(matchingVillains)
-    : response.sendStatus(404)
+  const foundVillain = villains.filter((villain) => villain.slug === slug)
+
+  return response.send(foundVillain)
 }
 
-const getNextId = () => {
-  const lastId = villains.reduce((acc, villain) => {
-    return villain.id > acc ? villain.id : acc
-  }, 0)
-
-  return lastId + 1
-}
-
-const villainData = (request, response) => {
-  const { villainData } = request.params
-
-  const findMonster = villains.filter((villain) => villain.name.toLowerCase().includes(villainData) ||
-    villain.slug.toString().toLowerCase().includes(villainData))
-
-  return response.send(findMonster)
-}
 
 const saveNewVillain = (request, response) => {
   const {
@@ -43,7 +26,7 @@ const saveNewVillain = (request, response) => {
   }
 
   const newVillain = {
-    name, movie, slug, id: getNextId()
+    name, movie, slug
   }
 
   villains.push(newVillain)
@@ -51,4 +34,4 @@ const saveNewVillain = (request, response) => {
   return response.status(201).send(newVillain)
 }
 
-module.exports = { getAllVillains, getVillainById, villainData, saveNewVillain }
+module.exports = { getAllVillains, getVillainBySlug, saveNewVillain }
