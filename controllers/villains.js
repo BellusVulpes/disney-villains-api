@@ -1,7 +1,10 @@
 const villains = require('../villains')
+const models = require('../models')
 
-const getAllVillains = (request, response) => {
-  return response.send(villains)
+const getAllVillains = async (request, response) => {
+  models.villains.findAll().then(villains => {
+    return response.send(villains)
+  })
 }
 
 
