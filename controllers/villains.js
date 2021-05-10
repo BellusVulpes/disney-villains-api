@@ -16,8 +16,7 @@ const getVillainBySlug = (request, response) => {
   return response.send(foundVillain)
 }
 
-
-const saveNewVillain = (request, response) => {
+const saveNewVillain = async (request, response) => {
   const {
     name, movie, slug
   } = request.body
@@ -28,13 +27,31 @@ const saveNewVillain = (request, response) => {
       .send('The following fields are required: name, movie, slug')
   }
 
-  const newVillain = {
+  const newVillain = await models.villains.create({
     name, movie, slug
-  }
-
-  villains.push(newVillain)
+  })
 
   return response.status(201).send(newVillain)
 }
+
+// const saveNewVillain = (request, response) => {
+//   const {
+//     name, movie, slug
+//   } = request.body
+
+//   if (!name || !movie || !slug) {
+//     return response
+//       .status(400)
+//       .send('The following fields are required: name, movie, slug')
+//   }
+
+//   const newVillain = {
+//     name, movie, slug
+//   }
+
+//   villains.push(newVillain)
+
+//   return response.status(201).send(newVillain)
+// }
 
 module.exports = { getAllVillains, getVillainBySlug, saveNewVillain }
