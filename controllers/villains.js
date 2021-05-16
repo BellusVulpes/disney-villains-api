@@ -7,17 +7,23 @@ const getAllVillains = async (request, response) => {
 
     return response.send(villains)
   } catch (error) {
-    return response.status(500).send('unable to retrieve all , please try again')
+    return response.status(500).send('unable to retrieve all villains, please try again')
   }
 }
 
 
-const getVillainBySlug = (request, response) => {
-  const { slug } = request.params
+const getVillainBySlug = async (request, response) => {
+  try {
+    const { slug } = request.params
 
-  const foundVillain = villains.filter((villain) => villain.slug === slug)
+    const matchingVillain = await models.villains.findOne({ where: { slug } })
 
-  return response.send(foundVillain)
+    return matchingVillain
+      ? response.send(matchingVillain)
+      : response.sendStatus(404)
+  } catch (error) {
+    return response.status(500).send('unable to retrieve villain, please try again')
+  }
 }
 
 const saveNewVillain = async (request, response) => {
